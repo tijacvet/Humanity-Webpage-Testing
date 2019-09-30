@@ -1,0 +1,114 @@
+package humanity.test;
+
+import java.io.File;
+import java.io.FileInputStream;
+//import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import humanity.object.AddEmployeesPage;
+import humanity.object.LoginPage;
+import humanity.object.PersonalPage;
+import humanity.object.StaffPage;
+import humanity.object.StartPage;
+import humanity.object.TimeClockPage;
+
+public class TheTest {
+	public static boolean testHumanity() throws IOException {
+		System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+
+		// go to the website
+		driver.get(StartPage.HUMANITY_URL);
+		// wait for the page to load
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		// max the browser for the unchanged HTML elements
+		driver.manage().window().maximize();
+
+		// Let's log in
+		StartPage.clickLoginButton(driver);
+
+		// entering our email, password and click log in button
+		LoginPage.sendKeysEmailField(driver, "tena@net1mail.com");
+		LoginPage.sendKeysPasswordField(driver, "Petardoo");
+		LoginPage.clickLoginButton(driver);
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+
+		// let's go to menu and click Staff button
+		PersonalPage.clickStaffButton(driver);
+
+		// start adding the employee(s)
+		StaffPage.clickAddEmployees(driver);
+
+//		//This is an example for adding only one new employee
+//		HumanityStaff.sendKeysFirstNameField(driver, "Mahatma");
+//		HumanityStaff.sendKeysLastNameField(driver, "Gandi");
+//		HumanityStaff.sendKeysEmailField(driver, "peace_out@gmail.com");
+
+		// find the file
+		File src = new File("HumanityDataFile.xls");
+		// input the Excel file stream
+		FileInputStream fis = new FileInputStream(src);
+		// open the file
+		HSSFWorkbook wbe = new HSSFWorkbook(fis);
+		// get the particular sheet, and get the value needed
+		HSSFSheet TestData = wbe.getSheetAt(0);
+		// this is a variable to determine how many filled rows there is in the sheet
+		int rowcount = TestData.getLastRowNum();
+
+		// making of the loop for the data input
+		// we only have one person today, but a loop might help in the future
+
+		try {
+			// making of the loop for the data input
+			// we only have one person today, but a loop might help in the future
+			for (int i = 1; i <= rowcount; i++) {// we are starting from the second row, that is why i=1
+				HSSFRow r = TestData.getRow(i);
+				if (r != null) {
+					String firstName = r.getCell(0).getStringCellValue();
+					String lastName = r.getCell(1).getStringCellValue();
+					String email = r.getCell(2).getStringCellValue();
+
+					AddEmployeesPage.sendKeysFirstNameField(driver, i, firstName);
+					AddEmployeesPage.sendKeysLastNameField(driver, i, lastName);
+					AddEmployeesPage.sendKeysEmailField(driver, i, email);
+				}
+
+				else {
+					AddEmployeesPage.clickSaveEmployeesButton(driver);
+				}
+				wbe.close();
+			}
+		} catch (Exception e) {
+			System.out.println(e.toString());
+		} finally {
+			driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+			AddEmployeesPage.clickSaveEmployeesButton(driver);
+			PersonalPage.clickStaffButton(driver);
+			driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		}
+
+		// going to the menu again and this time we are clicking on Time Clock button
+		PersonalPage.clickTimeClockButton(driver);
+
+		// we start a shift and we are closing the shift by clicking the Clock in/out
+		// button
+		TimeClockPage.clickClockInButton(driver);
+		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		TimeClockPage.clickClockOutButton(driver);
+
+		// sign out action
+		PersonalPage.clickSignOut(driver);
+		// quit the driver
+		driver.quit();
+		return true;
+	}
+}

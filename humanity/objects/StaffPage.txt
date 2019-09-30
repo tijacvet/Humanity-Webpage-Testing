@@ -1,0 +1,16 @@
+package humanity.object;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class StaffPage {
+	private static final String ADD_EMPLOYEES_XPATH = "//button[@id='act_primary']";
+	
+	public static WebElement getAddEmployees(WebDriver driver) {
+		return driver.findElement(By.xpath(ADD_EMPLOYEES_XPATH));
+	}
+	public static void clickAddEmployees(WebDriver driver) {
+		getAddEmployees(driver).click();
+	}
+}

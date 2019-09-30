@@ -1,0 +1,40 @@
+package humanity.object;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class LoginPage {
+	public static final String LOGIN_PAGE_URL="https://www.humanity.com/app/";
+	private static final String EMAIL_XPATH = "//input[@id='email']";
+	private static final String PASSWORD_XPATH="//input[@id='password']";
+	private static final String LOGIN_BUTTON_XPATH="//button[contains(text(),'Log in')]";
+	
+	public static WebElement getEmailField(WebDriver driver) {
+		return driver.findElement(By.xpath(EMAIL_XPATH));
+	}
+	public static void clickEmailField(WebDriver driver) {
+		getEmailField(driver).click();
+	}
+	
+	public static void sendKeysEmailField(WebDriver driver, String data) {
+		getEmailField(driver).sendKeys(data);
+	}
+	public static WebElement getPasswordField(WebDriver driver) {
+		return driver.findElement(By.xpath(PASSWORD_XPATH));
+	}
+	public static void clickPasswordField(WebDriver driver) {
+		getPasswordField(driver).click();
+	}
+	
+	public static void sendKeysPasswordField(WebDriver driver, String data) {
+		getPasswordField(driver).sendKeys(data);
+	}
+	public static WebElement getLoginButton(WebDriver driver) {
+		return driver.findElement(By.xpath(LOGIN_BUTTON_XPATH));
+	}
+	public static void clickLoginButton(WebDriver driver) {
+		getLoginButton(driver).click();
+	}
+}
+

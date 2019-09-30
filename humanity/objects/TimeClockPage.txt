@@ -1,0 +1,23 @@
+package humanity.object;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class TimeClockPage {
+	private static final String CLOCK_IN_BUTTON_XPATH = "//a[@id='tc_tl_ci']";
+	private static final String CLOCK_OUT_BUTTON_XPATH = "//a[@id='tc_tl_co']";
+	
+	public static WebElement getClockInButton(WebDriver driver) {
+		return driver.findElement(By.xpath(CLOCK_IN_BUTTON_XPATH));
+	}
+	public static void clickClockInButton(WebDriver driver) {
+		getClockInButton(driver).click();
+	}
+	public static WebElement getClockOutButton(WebDriver driver) {
+		return driver.findElement(By.xpath(CLOCK_OUT_BUTTON_XPATH));
+	}
+	public static void clickClockOutButton(WebDriver driver) {
+		getClockOutButton(driver).click();
+	}
+}

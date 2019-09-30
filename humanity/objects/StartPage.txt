@@ -1,0 +1,17 @@
+package humanity.object;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+public class StartPage {
+	public static final String HUMANITY_URL="https://www.humanity.com/";
+	private static final String LOGIN_BUTTON_XPATH="//p[contains(text(),'LOGIN')]";
+
+	public static WebElement getLoginButton(WebDriver driver) {
+		return driver.findElement(By.xpath(LOGIN_BUTTON_XPATH));
+	}
+	public static void clickLoginButton(WebDriver driver) {
+		getLoginButton(driver).click();
+	}
+}
